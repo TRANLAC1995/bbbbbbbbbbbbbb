@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trang Thông Tin Đơn Vị và Đăng ký Yêu cầu</title>
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+
+/* Nền trang */
+#background {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    z-index: -1;
+}
+
+/* Body & Header */
+body { font-family: 'Arial', sans-serif; color: #000; }
+header {
+    background: rgba(255,255,255,0.8);
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    color: #000;
+    position: fixed;
+    top:0;
+    width: 100%;
+    z-index: 1000;
+}
+header h1 {
+    font-size: 1.7rem;
+    margin-bottom: 10px;
+    color: #007BFF;
+}
+
+/* Nút đăng nhập */
+.login-btn {
+    position: fixed;
+    top: 0.5cm; left: 0.5cm;
+    width: 3cm; height: 2cm;
+    background: #003366;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 1001;
+    font-size: 1rem;
+}
+.login-btn:hover { background: #0055aa; }
+/* Section & Card */
+section { max-width: 900px; margin: 100px auto 30px; padding: 10px; }
+.card {
+    background: rgba(0, 33, 33, 0.4);
+    backdrop-filter: blur(15px);
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+    color: #fff;
+}
+.card:hover {transform: translateY(-5px);}
+#gth h2, #anh h2, #qd h2 { color: #F5F5DC; }
+p, ul {line-height:1.6; color: #fff;}
+ul li {margin-bottom:8px;}
+#tintuc a { color: #F5F5DC; text-decoration: underline; }
+#tintuc a:hover { color: #ff4500; }
+
+/* Hình ảnh */
+.image-row {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    justify-content: center; margin-top: 10px;
+}
+.image-item {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.image-item img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    height: 150px;
+}
+.image-item p {
+    margin-top: 5px;
+    text-align: center;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+/* Form đăng ký */
+.container {
+    max-width: 600px;
+    margin: 50px auto 50px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(173, 216, 230, 0.8));
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    color: #000;
+    border: 2px solid #1e90ff;
+}
+.container h2 {text-align:center; margin-bottom:25px; color:#003366;}
+label { display: block; font-weight: bold; margin-top: 15px; color: #003366; }
+input, select {
+    width: 100%; padding: 12px; margin-top: 6px;
+    border-radius: 10px; border: 2px solid #1e90ff;
+    background: rgba(255,255,255,0.7); color: #000;
+    transition: all 0.3s ease;
+}
+input::placeholder {color: #555;}
+input:focus, select:focus { outline: none; border-color: #ff4500; background: rgba(255,255,255,0.9); }
+button {
+    width: 100%; padding: 15px; margin-top: 20px;
+    border: none; border-radius: 10px;
+    background: #ff4500; color: #fff;
+    font-size: 16px; cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+button:hover {background: #ff6347; transform: translateY(-2px);}
+#status {text-align:center; margin-top:15px; font-weight:bold; color:#ff4500;}
+
+/* Tra cứu trạng thái */
+#statusContainer {
+    max-width: 500px; margin: 30px auto 60px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    text-align: center;
+    border: 2px solid #1e90ff;
+}
+#statusContainer h2 { margin-bottom: 15px; color: #003366; }
+#statusContainer input { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 10px; border: 2px solid #1e90ff; }
+#statusContainer button { width: 100%; padding: 12px; border-radius: 10px; background: #ff4500; color: #fff; font-size: 15px; cursor: pointer; }
+#statusResult { margin-top: 15px; font-weight: bold; color: #003366; }
+
+/* Responsive */
+@media(max-width:600px){
+    header h1 {font-size:1.4rem;}
+    .card {padding:15px; margin:15px 10px;}
+    iframe, video {height:200px;}
+    .image-item {width:48%; margin-bottom:10px;}
+    .container {padding:20px; margin:80px 10px;}
+    input, select {padding:10px;}
+    button {padding:12px; font-size:14px;}
+}
+</style>
+</head>
+<body>
+<div id="background"></div>
+
+<header>
+    <h1> THỦ KHU VỰC 1</h1>
+
+    <button class="login-btn"
+        onclick="window.location.href='login.html'">
+        Đăng nhập quản lý
+    </button>
+
+    <button class="login-btn"
+        style="left:4cm"
+        onclick="window.location.href='danhsach-quannhan.html'">
+        DS quân nhân
+    </button>
+</header>
+
+
+<section>
+    <!-- Giới thiệu -->
+    <div class="card" id="gth">
+        <h2>Giới thiệu</h2>
+        <p>Bộ Chỉ huy Phòng thủ Khu vực 1 Trường Hà (Cao Bằng) là lực lượng vũ trang địa phương, giữ vai trò nòng cốt trong công tác quốc phòng – an ninh trên địa bàn khu vực Trường Hà. Đơn vị có nhiệm vụ tổ chức xây dựng thế trận quốc phòng toàn dân gắn với thế trận an ninh nhân dân, sẵn sàng chiến đấu, bảo vệ vững chắc chủ quyền biên giới, giữ gìn an ninh chính trị, trật tự an toàn xã hội; đồng thời phối hợp chặt chẽ với cấp ủy, chính quyền địa phương trong phòng chống thiên tai, cứu hộ cứu nạn và xây dựng cơ sở vững mạnh toàn diện.</p>
+    </div>
+
+   
+    <!-- Ảnh đơn vị -->
+    <div class="card" id="anh">
+        <h2>Ảnh Đơn Vị</h2>
+        <div class="image-row">
+            <div class="image-item"><img src="anh1.jpg" alt="Ảnh 1"></p></div>
+            <div class="image-item"><img src="anh2.jpg" alt="Ảnh 2"><p>dsfdsfdsfdsfsdfdsf</p></div>
+            <div class="image-item"><img src="anh3.jpg" alt="Ảnh 3"><p></p></div>
+     		 <div class="image-item"><img src="anh4.jpg" alt="Ảnh 4"></p></div>
+            <div class="image-item"><img src="anh5.jpg" alt="Ảnh 5"><p></p></div>
+            <div class="image-item"><img src="anh6.jpg" alt="Ảnh 6"><p></p></div>
+      </div>
+    </div>
+
+<!-- Form đăng ký -->
+<div class="container">
+<h2>Đăng ký giải quyết chế độ</h2>
+<form id="visitForm">
+    <label>Họ và tên:</label>
+    <input type="text" id="hoten" placeholder="Nhập họ tên" required />
+    <label>Số CCCD:</label>
+    <input type="text" id="cccd" placeholder="Nhập CCCD" required />
+    <label>Mối quan hệ:</label>
+    <input type="text" id="quanhe" placeholder="Nhập quan hệ" required />
+    <label>Tên quân nhân :</label>
+    <input type="text" id="quannhan" placeholder="Nhập tên quân nhân" required />
+    <label>Số điện thoại:</label>
+    <input type="text" id="sdt" placeholder="Nhập số điện thoại" required />
+    <label>Tỉnh/Thành phố:</label>
+    <input type="text" id="tinhthanh" required>
+    <label>Đơn vị:</label>
+    <input type="text" id="donvi" placeholder="Nhập đơn vị" required />
+    <label>Quyết định TTCP:</label>
+    <select id="quyetdinh" required>
+        <option value="">-- Chọn TTCP --</option>
+        <option value="62">62</option>
+        <option value="49">49</option>
+    </select>
+    <label>Nhu cầu cần giải quyết:</label>
+    <select id="nhucau" onchange="checkOther(this)" required>
+        <option value="">-- Chọn nhu cầu --</option>
+        <option value="Đăng ký cán bộ quân đội nghỉ hưu">Đăng ký cán bộ quân đội nghỉ hưu</option>
+        <option value="Giải quyết bệnh hiểm nghèo">Giải quyết bệnh hiểm nghèo</option>
+        <option value="Giải quyết chế độ cho thân nhân liệt sĩ">Giải quyết chế độ cho thân nhân liệt sĩ</option>
+        <optgroup label="Theo QĐ49">
+            <option value="Hỗ trợ phụ cấp thâm niên theo QĐ49">Hỗ trợ phụ cấp thâm niên theo QĐ49</option>
+            <option value="Hỗ trợ phụ cấp chức danh theo QĐ49">Hỗ trợ phụ cấp chức danh theo QĐ49</option>
+            <option value="Hỗ trợ trợ cấp trách nhiệm theo QĐ49">Hỗ trợ trợ cấp trách nhiệm theo QĐ49</option>
+            <option value="Hỗ trợ trợ cấp công tác xa theo QĐ49">Hỗ trợ trợ cấp công tác xa theo QĐ49</option>
+            <option value="Hỗ trợ trợ cấp chuyên môn theo QĐ49">Hỗ trợ trợ cấp chuyên môn theo QĐ49</option>
+        </optgroup>
+        <optgroup label="Theo QĐ62">
+            <option value="Xác định nhu cầu kinh phí lương cơ sở theo QĐ62">Xác định nhu cầu kinh phí lương cơ sở theo QĐ62</option>
+            <option value="Thủ tục trợ cấp hàng tháng cán bộ xã đã nghỉ việc theo QĐ62">Thủ tục trợ cấp hàng tháng cán bộ xã đã nghỉ việc theo QĐ62</option>
+            <option value="Điều chỉnh quỹ phụ cấp người hoạt động không chuyên trách theo QĐ62">Điều chỉnh quỹ phụ cấp người hoạt động không chuyên trách theo QĐ62</option>
+            <option value="Hỗ trợ phụ cấp trách nhiệm cán bộ xã theo QĐ62">Hỗ trợ phụ cấp trách nhiệm cán bộ xã theo QĐ62</option>
+            <option value="Giải quyết phụ cấp công tác ở vùng sâu vùng xa theo QĐ62">Giải quyết phụ cấp công tác ở vùng sâu vùng xa theo QĐ62</option>
+            <option value="Hỗ trợ chi trả bảo hiểm theo lương cơ sở theo QĐ62">Hỗ trợ chi trả bảo hiểm theo lương cơ sở theo QĐ62</option>
+        </optgroup>
+        <option value="Khác">Khác (tự điền)</option>
+    </select>
+    <input type="text" id="otherInput" placeholder="Nhập nhu cầu khác" style="display:none; margin-top:5px;">
+    <button type="submit">Gửi đăng ký</button>
+</form>
+<p id="status"></p>
+</div>
+<div class="container" id="soldierContainer" style="display:none;">
+  <h2>Danh sách quân nhân</h2>
+  <input type="text" id="searchName" placeholder="Nhập tên quân nhân" onkeyup="filterList()" />
+  <ul id="soldierList" style="list-style:none; padding:0; max-height:300px; overflow-y:auto;"></ul>
+</div>
+
+<!-- Tra cứu trạng thái -->
+<div id="statusContainer">
+<h2>Tra cứu trạng thái đăng ký</h2>
+<input type="text" id="cccdCheck" placeholder="Nhập CCCD">
+<button onclick="checkStatus()">Tra cứu</button>
+<div id="statusResult"></div>
+</div>
+
+<script>
+// Xử lý gửi form đăng ký
+document.getElementById("visitForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const statusEl = document.getElementById("status");
+    const data = {
+        hoten: document.getElementById("hoten").value,
+        cccd: document.getElementById("cccd").value,
+        quanhe: document.getElementById("quanhe").value,
+        quannhan: document.getElementById("quannhan").value,
+        sdt: document.getElementById("sdt").value,
+        tinhthanhpho: document.getElementById("tinhthanh").value,
+        donvi: document.getElementById("donvi").value,
+        quyetdinh: document.getElementById("quyetdinh").value,
+        nhucau: document.getElementById("nhucau").value,
+        trangthai: "Chờ duyệt",
+        thoigian: new Date().toLocaleString()
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbxV7og1P6CLgNoNG6-c4zSNBsQ1jZrQ-28ahcDxtG0spS0UDgCB9Q-g84Rnt0n-EY8TvA/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+    }).then(() => {
+        statusEl.innerHTML = "Đăng ký thành công!";
+        document.getElementById("visitForm").reset();
+        setTimeout(() => { statusEl.innerHTML = ""; }, 4000);
+        // Nếu danh sách đang hiển thị, tải lại
+        const container = document.getElementById("soldierContainer");
+        if(container.style.display === "block") {
+            loadSoldiers();
+        }
+    }).catch(err => {
+        console.error(err);
+        statusEl.innerHTML = "Gửi thất bại, vui lòng thử lại!";
+        setTimeout(() => { statusEl.innerHTML = ""; }, 4000);
+    });
+});
+
+// Tra cứu CCCD
+function checkStatus() {
+    const cccdInput = document.getElementById("cccdCheck").value.trim();
+    const resultEl = document.getElementById("statusResult");
+
+    if (!cccdInput) {
+        resultEl.innerHTML = "Vui lòng nhập số CCCD để tra cứu.";
+        return;
+    }
+
+    fetch(`https://script.google.com/macros/s/AKfycbxV7og1P6CLgNoNG6-c4zSNBsQ1jZrQ-28ahcDxtG0spS0UDgCB9Q-g84Rnt0n-EY8TvA/exec?cccd=${cccdInput}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data || (Array.isArray(data) && data.length === 0)) {
+                resultEl.innerHTML = "Không tìm thấy đăng ký nào với CCCD này.";
+            } else {
+                const row = Array.isArray(data) ? data[0] : data;
+                resultEl.innerHTML = `Trạng thái: ${row.trangthai || "Chưa có"} <br> Thời gian: ${row.thoigian || "Chưa có"}`;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            resultEl.innerHTML = "Lỗi tra cứu, vui lòng thử lại.";
+        });
+}
+
+// Hiển thị input khác nếu chọn "Khác"
+function checkOther(select) {
+    const otherInput = document.getElementById("otherInput");
+    otherInput.style.display = (select.value === "Khác") ? "block" : "none";
+}
+
+// ====== Danh sách quân nhân ======
+
+// Hiển thị danh sách
+function displayList(list) {
+    const ul = document.getElementById("soldierList");
+    ul.innerHTML = "";
+    if (!list || list.length === 0) {
+        ul.innerHTML = "<li>Không có quân nhân nào</li>";
+        return;
+    }
+    list.forEach(s => {
+        const li = document.createElement("li");
+        li.style.padding = "8px";
+        li.style.borderBottom = "1px solid #ccc";
+        li.innerHTML = `<strong>${s.hoten}</strong> - ${s.donvi} - ${s.chedo} - ${s.capbac}`;
+        ul.appendChild(li);
+    });
+}
+
+// Lấy danh sách từ API
+function loadSoldiers() {
+    fetch(API_URL)
+    .then(res => res.json())
+    .then(data => {
+        soldiers = data;
+        displayList(soldiers);
+    })
+    .catch(err => console.error("Lỗi tải danh sách:", err));
+}
+
+// Tìm kiếm theo tên
+function filterList() {
+    const keyword = document.getElementById("searchName").value.toLowerCase();
+    const filtered = soldiers.filter(s => s.hoten.toLowerCase().includes(keyword));
+    displayList(filtered);
+}
+
+// Hiển thị danh sách khi bấm nút
+function showSoldiers() {
+    const container = document.getElementById("soldierContainer");
+    container.style.display = "block"; // hiện khối
+    loadSoldiers(); // tải dữ liệu
+}
+</script>
+
+
+</body>
+</html>

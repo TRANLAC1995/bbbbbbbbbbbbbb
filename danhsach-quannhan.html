@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Danh sách quân nhân</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family: Arial, sans-serif; color:#fff; background:#001;}
+
+/* Nền */
+#background{
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
+    background:url('background.jpg') no-repeat center center fixed;
+    background-size:cover;
+    z-index:-1;
+}
+
+/* Header */
+header{
+    position:fixed; top:0; width:100%;
+    padding:15px;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(6px);
+    text-align:center; color:#003366;
+    z-index:1000;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+}
+header h2{font-size:1.3rem;}
+
+/* Nút quay lại */
+.back-btn{
+    position:fixed; top:15px; left:15px;
+    padding:8px 12px; border:none; border-radius:8px;
+    background:#ff4500; color:#fff; cursor:pointer; z-index:1001;
+}
+
+/* Nội dung */
+section{
+    max-width:900px; margin:100px auto 40px; padding:10px;
+}
+
+/* Card */
+.card{
+    background:rgba(0,33,33,0.45);
+    backdrop-filter:blur(15px);
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.4);
+}
+
+/* Ô tìm kiếm */
+.search{
+    display:flex; flex-direction:column; gap:10px;
+}
+input, select{
+    padding:12px; border-radius:10px; border:none; font-size:16px;
+}
+
+/* Danh sách quân nhân */
+.list{
+    margin-top:15px;
+    max-height:500px;
+    overflow-y:auto;
+}
+.item{
+    background:rgba(255,255,255,0.9); color:#000;
+    padding:12px; border-radius:12px; margin-bottom:10px;
+}
+.item strong{color:#003366;}
+
+/* Desktop */
+@media(min-width:700px){
+    .search{flex-direction:row;}
+    .search input{flex:2;}
+    .search select{flex:1;}
+}
+</style>
+</head>
+
+<body>
+<div id="background"></div>
+
+<header>
+    <h2>DANH SÁCH QUÂN NHÂN</h2>
+</header>
+
+<button class="back-btn" onclick="history.back()">⬅ Quay lại</button>
+
+<section>
+<div class="card">
+
+    <div class="search">
+        <input type="text" id="searchName" placeholder="Nhập tên quân nhân">
+        <select id="filterQD">
+            <option value="">Tất cả chế độ</option>
+            <option value="49">Quyết định 49</option>
+            <option value="62">Quyết định 62</option>
+        </select>
+    </div>
+
+    <div class="list" id="list">
+        <p>Đang tải danh sách...</p>
+    </div>
+
+</div>
+</section>
+
+<script>
+// URL API Google Apps Script
+const API_URL = "https://script.google.com/macros/s/AKfycbxtOQkp7myZqGlkr9b3hhHkJkaJZoNRper57YeSzOJOeofRvgStjAfuRuj0j9fw_i6T/exec";
+
+let soldiers = [];
+
+// Lấy dữ liệu từ API
+async function loadSoldiers(){
+    try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        soldiers = data;
+        render(soldiers);
+    } catch(err){
+        console.error("Lỗi tải danh sách:", err);
+        document.getElementById("list").innerHTML = "<p>Không tải được danh sách.</p>";
+    }
+}
+
+// Hiển thị danh sách
+function render(list){
+    const el = document.getElementById("list");
+    el.innerHTML = "";
+
+    if(!list || list.length === 0){
+        el.innerHTML = "<p>Không có quân nhân nào</p>";
+        return;
+    }
+
+    list.forEach(i=>{
+        el.innerHTML += `
+        <div class="item">
+            <strong>${i.hoten}</strong><br>
+            Đơn vị: ${i.donvi || "Chưa có"}<br>
+            Chế độ: QĐ ${i.chedo || "Chưa có"}<br>
+            Cấp bậc: ${i.capbac || "Chưa có"}<br>
+            Năm sinh: ${i.namsinh || "Chưa có"}<br>
+            Ghi chú: ${i.ghichu || ""}
+        </div>`;
+    });
+}
+
+// Lọc theo tên và chế độ
+function filter(){
+    const name = document.getElementById("searchName").value.toLowerCase();
+    const qd = document.getElementById("filterQD").value;
+
+    const filtered = soldiers.filter(i=>{
+        return i.hoten.toLowerCase().includes(name) &&
+               (qd ? i.chedo === qd : true);
+    });
+
+    render(filtered);
+}
+
+// Gắn sự kiện filter
+document.getElementById("searchName").oninput = filter;
+document.getElementById("filterQD").onchange = filter;
+
+// Load danh sách khi mở trang
+loadSoldiers();
+</script>
+
+</body>
+</html>
